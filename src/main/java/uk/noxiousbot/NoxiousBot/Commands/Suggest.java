@@ -33,7 +33,6 @@ public class Suggest extends CommandCore {
                 builder.withAuthorIcon(event.getAuthor().getAvatarURL());
                 builder.withAuthorName("Suggestion by "+event.getAuthor().getName());
                 builder.withDescription(event.getMessage().getContent().substring(9));
-                builder.withColor(0,0,255);
                 IMessage message = event.getGuild().getChannelByID(510489556462862378L).sendMessage(builder.build());
                 message.addReaction(tick);
                 TimeUnit.SECONDS.sleep(1);
