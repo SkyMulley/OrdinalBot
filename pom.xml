@@ -50,7 +50,7 @@
 
                             <!-- Specify your own main class here: {package}.{class} -->
 
-                            <mainClass>tech.gladius.GladiusBot.Main</mainClass>
+                            <mainClass>uk.noxiousbot.NoxiousBot.Main</mainClass>
 
                         </manifest>
 
