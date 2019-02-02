@@ -85,7 +85,7 @@
 
 
     <repositories>
-        
+
             <repository>
                 <id>jitpack.io</id>
                 <url>https://jitpack.io</url>
@@ -137,6 +137,8 @@
                 <groupId>com.discord4j.discord4j</groupId>
                 <artifactId>discord4j-core</artifactId>
                 <version>v3-SNAPSHOT</version>
+                <scope>system</scope>
+                <systemPath>${project.basedir}/discord4j.jar</systemPath>
             </dependency>
     </dependencies>
 </project>
