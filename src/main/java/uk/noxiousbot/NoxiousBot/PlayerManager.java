@@ -54,4 +54,22 @@ public class PlayerManager {
             properties.store(new FileOutputStream(f), null);
         } catch(Exception e) { e.printStackTrace();}
     }
+
+    public void addCoins(Long player, int coins) {
+        rebuildPlayerLists();
+        HashMap<Long, Integer> players = getPlayers();
+        int score = players.get(player);
+        players.remove(player);
+        players.put(player, score + coins);
+        setPlayers(players);
+    }
+
+    public void loseCoins(Long player, int coins) {
+        rebuildPlayerLists();
+        HashMap<Long, Integer> players = getPlayers();
+        int score = players.get(player);
+        players.remove(player);
+        players.put(player, score - coins);
+        setPlayers(players);
+    }
 }
