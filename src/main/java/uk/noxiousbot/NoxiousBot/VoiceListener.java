@@ -2,7 +2,6 @@ package uk.noxiousbot.NoxiousBot;
 
 import com.ibasco.agql.protocols.valve.source.query.client.SourceQueryClient;
 import com.ibasco.agql.protocols.valve.source.query.pojos.SourceServer;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.*;
 import sx.blah.discord.util.EmbedBuilder;
@@ -21,25 +20,22 @@ public class VoiceListener {
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
     private PlayerManager pm;
     private Random rand = new Random();
-    private IGuild guild = client.getGuildByID(464614503825276928L);
+    private IGuild guild;
     public VoiceListener(IDiscordClient client, PlayerManager pm) {
         this.client = client;
         this.pm = pm;
+        guild = client.getGuildByID(464614503825276928L);
         start();
     }
     private void start() {
         service.scheduleAtFixedRate(() -> {
+            System.out.println("Checking for voice-chat members now");
             for(IUser user : client.getUsers()) {
                 if(!user.isBot()) {
                     IVoiceState state = user.getVoiceStateForGuild(guild);
                     if(state != null) {
-                        if (state.isSelfDeafened() || state.isDeafened() || state.isMuted() || state.isSelfMuted() || state.getChannel().getConnectedUsers().size() != 1) {
-                            pm.rebuildPlayerLists();
-                            HashMap<Long, Integer> players = pm.getPlayers();
-                            int score = players.get(user.getLongID());
-                            players.remove(user.getLongID());
-                            players.put(user.getLongID(), score + rand.nextInt(10));
-                            pm.setPlayers(players);
+                        if (!state.isSelfDeafened() && !state.isDeafened() && !state.isMuted() && !state.isSelfMuted() && state.getChannel().getConnectedUsers().size() != 1) {
+                            pm.addCoins(user.getLongID(),rand.nextInt(5));
                         }
                     }
                 }
