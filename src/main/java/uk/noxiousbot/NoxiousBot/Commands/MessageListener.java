@@ -51,6 +51,7 @@ public class MessageListener {
 
     private void getCommands() {
         addCommand(new Ping());
+        addCommand(new Info());
         addCommand(new Suggest());
         addCommand(new Ticket());
         addCommand(new HigherLower(pm));
