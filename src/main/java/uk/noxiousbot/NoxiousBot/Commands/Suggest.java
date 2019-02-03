@@ -54,7 +54,7 @@ public class Suggest extends CommandCore {
 
     public void argsNotFound(MessageReceivedEvent event) {
         EmbedBuilder builder = new EmbedBuilder();
-        builder.withDescription("You haven't supplied enough args in your request. Check with !help if you are unsure of the usage of this command.");
+        builder.withDescription("You haven't supplied enough args in your request. Check with ?help if you are unsure of the usage of this command.");
         builder.withFooterText("Not enough args");
         RequestBuffer.request(() -> event.getMessage().getChannel().sendMessage(builder.build()));
     }
