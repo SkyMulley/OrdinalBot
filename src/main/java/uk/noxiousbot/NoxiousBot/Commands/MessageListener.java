@@ -3,14 +3,14 @@ package uk.noxiousbot.NoxiousBot.Commands;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.impl.events.guild.member.UserLeaveEvent;
+import sx.blah.discord.handle.obj.IUser;
 import uk.noxiousbot.NoxiousBot.Main;
 import uk.noxiousbot.NoxiousBot.PlayerManager;
 import uk.noxiousbot.NoxiousBot.VoiceListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
+import static java.util.stream.Collectors.toMap;
 
 public class MessageListener {
     private Main main;
@@ -31,13 +31,9 @@ public class MessageListener {
             getCommands();
             hasStarted = true;
         }
+        checkOrdinals(event);
         if(!event.getAuthor().isBot()) {
-            pm.rebuildPlayerLists();
-            HashMap<Long, Integer> players = pm.getPlayers();
-            int score = players.get(event.getAuthor().getLongID());
-            players.remove(event.getAuthor().getLongID());
-            players.put(event.getAuthor().getLongID(), score + rand.nextInt(10));
-            pm.setPlayers(players);
+            pm.addCoins(event.getAuthor().getLongID(),rand.nextInt(5));
             String[] argArray = event.getMessage().getContent().split(" ");
             if (argArray.length == 0 || !argArray[0].startsWith(BOT_PREFIX)) {
                 return;
@@ -57,8 +53,28 @@ public class MessageListener {
         addCommand(new Ping());
         addCommand(new Suggest());
         addCommand(new Ticket());
+        addCommand(new HigherLower(pm));
         addCommand(new Coins(pm.getPlayers()));
+        addCommand(new Slot(pm));
         addCommand(new Leaderboard(pm.getPlayers()));
         addCommand(new Help(getCommandList()));
+    }
+
+    private void checkOrdinals(MessageReceivedEvent event) {
+        try {
+            HashMap<Long, Integer> sorted = pm.getPlayers()
+                    .entrySet()
+                    .stream()
+                    .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                    .collect(
+                            toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+                                    LinkedHashMap::new));
+            Map.Entry<Long, Integer> entry = sorted.entrySet().iterator().next();
+            event.getClient().getUserByID(entry.getKey()).addRole(event.getGuild().getRoleByID(541711864120344587L));
+            for (IUser user : event.getClient().getUsers()) {
+                user.removeRole(event.getGuild().getRoleByID(541711864120344587L));
+            }
+        }catch(Exception e) {
+        }
     }
 }
