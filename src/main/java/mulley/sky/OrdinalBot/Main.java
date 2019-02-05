@@ -8,7 +8,7 @@ import discord4j.core.object.util.Snowflake;
 
 public class Main {
     public static void main(String[] args) {
-        DiscordClientBuilder builder = new DiscordClientBuilder("NTMwNzY4ODQ5NTk1NzkzNDE5.Dzcuew.WTJtV2TCLjbaTAeDzwZIxWsY8oI");
+        DiscordClientBuilder builder = new DiscordClientBuilder("");
         DiscordClient cli = builder.build();
         cli.login();
         cli.getEventDispatcher().on(ReadyEvent.class)
