@@ -1,7 +1,7 @@
-package uk.noxiousbot.NoxiousBot;
+package mulley.sky.OrdinalBot;
 
-import sx.blah.discord.api.IDiscordClient;
-import sx.blah.discord.handle.obj.IUser;
+import discord4j.core.DiscordClient;
+import discord4j.core.object.entity.User;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,8 +14,8 @@ public class PlayerManager {
     private HashMap<Long, Integer> players = new HashMap<>();
     private Properties properties = new Properties();
     private File f = new File("players.properties");
-    private IDiscordClient cli;
-    public PlayerManager(IDiscordClient cli) {
+    private DiscordClient cli;
+    public PlayerManager(DiscordClient cli) {
         this.cli = cli;
         try {
             if (!f.exists()) {
@@ -32,11 +32,11 @@ public class PlayerManager {
             for (String key : properties.stringPropertyNames()) {
                 players.put(Long.valueOf(key), Integer.parseInt(properties.get(key).toString()));
             }
-            for (IUser user : cli.getUsers()) {
+            for (User user : cli.getUsers().collectList().block()) {
                 if(!user.isBot()) {
-                    if (!players.containsKey(user.getLongID())) {
+                    if (!players.containsKey(user.getId().asLong())) {
                         System.err.println("User not in db");
-                        players.put(user.getLongID(), 0);
+                        players.put(user.getId().asLong(), 0);
                     }
                 }
             }
@@ -55,21 +55,55 @@ public class PlayerManager {
         } catch(Exception e) { e.printStackTrace();}
     }
 
-    public void addCoins(Long player, int coins) {
+    public void addCoins(User player, int coins) {
         rebuildPlayerLists();
         HashMap<Long, Integer> players = getPlayers();
-        int score = players.get(player);
-        players.remove(player);
-        players.put(player, score + coins);
+        int score = players.get(getPlayer(player));
+        players.remove(getPlayer(player));
+        players.put(getPlayer(player), score + coins);
         setPlayers(players);
     }
 
-    public void loseCoins(Long player, int coins) {
+    public void loseCoins(User player, int coins) {
         rebuildPlayerLists();
         HashMap<Long, Integer> players = getPlayers();
-        int score = players.get(player);
-        players.remove(player);
-        players.put(player, score - coins);
+        int score = players.get(getPlayer(player));
+        players.remove(getPlayer(player));
+        players.put(getPlayer(player), score - coins);
         setPlayers(players);
     }
+
+    public void blacklistPlayer(User player) {
+        rebuildPlayerLists();
+        HashMap<Long, Integer> players = getPlayers();
+        players.remove(getPlayer(player));
+        players.put(getPlayer(player), -1);
+        setPlayers(players);
+    }
+
+    public void unblacklistPlayer(User player) {
+        rebuildPlayerLists();
+        HashMap<Long, Integer> players = getPlayers();
+        players.remove(getPlayer(player));
+        players.put(getPlayer(player), 0);
+        setPlayers(players);
+    }
+
+    public boolean isBlacklisted(User player) {
+        rebuildPlayerLists();
+        HashMap<Long, Integer> players = getPlayers();
+        if(players.get(getPlayer(player)) == -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Integer getCoins(User player) {
+        rebuildPlayerLists();
+        HashMap<Long, Integer> players = getPlayers();
+        return players.get(getPlayer(player));
+    }
+
+    private Long getPlayer(User user) { return user.getId().asLong();}
 }
