@@ -1,8 +1,8 @@
-package uk.noxiousbot.NoxiousBot.Commands;
+package mulley.sky.OrdinalBot.Commands;
 
-
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
-import sx.blah.discord.handle.obj.IMessage;
+import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.entity.Message;
+import discord4j.rest.json.request.MessageEditRequest;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -20,12 +20,12 @@ public class Ping extends CommandCore {
 
     @Override
 
-    public boolean executeCommand(MessageReceivedEvent event, String[] argArray) {
+    public boolean executeCommand(MessageCreateEvent event, String[] argArray) {
         LocalDateTime sentTime = LocalDateTime.ofInstant(event.getMessage().getTimestamp(), ZoneId.systemDefault());
-        IMessage probe = event.getChannel().sendMessage("Waiting for reply..");
+        Message probe = event.getMessage().getChannel().block().createMessage("Waiting for reply..").block();
         LocalDateTime repliedTime = LocalDateTime.ofInstant(probe.getTimestamp(), ZoneId.systemDefault());
         long ping = Duration.between(sentTime,repliedTime).toMillis();
-        probe.edit(String.format("Pong! %s (%d ms)",event.getAuthor().mention(),ping));
+        probe.edit(spec -> String.format("Pong! %s (%d ms)",event.getMember().get().getMention(),ping)).block();
         return true;
     }
 
