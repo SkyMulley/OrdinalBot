@@ -34,20 +34,22 @@ public class Roulette {
         emojis.add(EmojiManager.getForAlias("chocolate_bar"));
         emojis.add(EmojiManager.getForAlias("heart"));
         emojis.add(EmojiManager.getForAlias("large_blue_diamond"));
+        emojis.add(EmojiManager.getForAlias("ring"));
+        emojis.add(EmojiManager.getForAlias("hot_pepper"));
         start();
     }
 
     private void start() {
         try {
-            Emoji emoji1 = emojis.get(rand.nextInt(3 + 1));
-            Emoji emoji2 = emojis.get(rand.nextInt(3 + 1));
-            Emoji emoji3 = emojis.get(rand.nextInt(3 + 1));
-            Emoji emoji4 = emojis.get(rand.nextInt(3 + 1));
-            Emoji emoji5 = emojis.get(rand.nextInt(3 + 1));
-            Emoji emoji6 = emojis.get(rand.nextInt(3 + 1));
-            Emoji emoji7 = emojis.get(rand.nextInt(3 + 1));
-            Emoji emoji8 = emojis.get(rand.nextInt(3 + 1));
-            Emoji emoji9 = emojis.get(rand.nextInt(3 + 1));
+            Emoji emoji1 = emojis.get(rand.nextInt(5 + 1));
+            Emoji emoji2 = emojis.get(rand.nextInt(5 + 1));
+            Emoji emoji3 = emojis.get(rand.nextInt(5 + 1));
+            Emoji emoji4 = emojis.get(rand.nextInt(5 + 1));
+            Emoji emoji5 = emojis.get(rand.nextInt(5 + 1));
+            Emoji emoji6 = emojis.get(rand.nextInt(5 + 1));
+            Emoji emoji7 = emojis.get(rand.nextInt(5 + 1));
+            Emoji emoji8 = emojis.get(rand.nextInt(5 + 1));
+            Emoji emoji9 = emojis.get(rand.nextInt(5 + 1));
             int moneyback = 0;
             if(emoji1.equals(emoji2) | emoji2.equals(emoji3) | emoji4.equals(emoji5) | emoji5.equals(emoji6) | emoji7.equals(emoji8) | emoji8.equals(emoji9)) {
                 moneyback = moneyback + (int)(bet*(40.0f/100.0f));
