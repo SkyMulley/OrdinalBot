@@ -1,19 +1,22 @@
 package mulley.sky.OrdinalBot.Games;
 
-import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.entity.Message;
 import mulley.sky.OrdinalBot.PlayerManager;
+import sx.blah.discord.api.events.EventSubscriber;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.util.EmbedBuilder;
+import sx.blah.discord.util.RequestBuffer;
 
 import java.util.Random;
 
 public class LowerHigher {
     private PlayerManager pm;
     private Integer bet;
-    private MessageCreateEvent mainevent;
-    private Message message;
+    private MessageReceivedEvent mainevent;
+    private IMessage message;
     private Random rand = new Random();
     private int number;
-    private EmbedB builder = new EmbedBuilder();
+    private EmbedBuilder builder = new EmbedBuilder();
     public LowerHigher(PlayerManager pm, Integer bet, MessageReceivedEvent mainevent) {
         this.pm = pm;
         this.bet = bet;

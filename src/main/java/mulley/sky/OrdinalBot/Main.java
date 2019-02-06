@@ -1,20 +1,24 @@
 package mulley.sky.OrdinalBot;
 
-import discord4j.core.DiscordClient;
-import discord4j.core.DiscordClientBuilder;
-import discord4j.core.event.domain.lifecycle.ReadyEvent;
-import discord4j.core.object.entity.TextChannel;
-import discord4j.core.object.util.Snowflake;
+import sx.blah.discord.api.ClientBuilder;
+import sx.blah.discord.api.IDiscordClient;
+import mulley.sky.OrdinalBot.Commands.MessageListener;
+
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        DiscordClientBuilder builder = new DiscordClientBuilder("NTMwNzY4ODQ5NTk1NzkzNDE5.Dzcuew.WTJtV2TCLjbaTAeDzwZIxWsY8oI");
-        DiscordClient cli = builder.build();
+        String token = "NTMwNzY4ODQ5NTk1NzkzNDE5.Dzcuew.WTJtV2TCLjbaTAeDzwZIxWsY8oI";
+        IDiscordClient cli = getBuiltDiscordClient(token);
+        cli.getDispatcher().registerListener(new MessageListener(cli));
         cli.login();
-        cli.getEventDispatcher().on(ReadyEvent.class)
-                .subscribe(event -> {
-                    ServerLink sl = new ServerLink((TextChannel) cli.getChannelById(Snowflake.of(470673417583067166L)).block());
-                    System.out.println("Bot is online, logged in as "+event.getSelf().getUsername()+event.getSelf().getDiscriminator()+" and server link should be setup");
-                });
+        try {TimeUnit.SECONDS.sleep(10);}catch (Exception e) {}
+        ServerLink sl = new ServerLink(cli.getChannelByID(470673417583067166L));
+    }
+
+    public static IDiscordClient getBuiltDiscordClient(String token) {
+        return new ClientBuilder()
+                .withToken(token)
+                .build();
     }
 }

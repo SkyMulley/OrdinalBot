@@ -2,17 +2,11 @@ package mulley.sky.OrdinalBot;
 
 import com.ibasco.agql.protocols.valve.source.query.client.SourceQueryClient;
 import com.ibasco.agql.protocols.valve.source.query.pojos.SourceServer;
-import discord4j.core.object.Embed;
-import discord4j.core.object.entity.Channel;
-import discord4j.core.object.entity.Message;
-import discord4j.core.object.entity.TextChannel;
-import discord4j.core.spec.EmbedCreateSpec;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
 
-import java.awt.*;
 import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -25,10 +19,10 @@ public class ServerLink {
     private Integer port;
     private SourceQueryClient client;
     private InetSocketAddress server;
-    private Message statusMessage;
-    private TextChannel channel;
+    private IMessage statusMessage;
+    private IChannel channel;
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-    public ServerLink(TextChannel channel) {
+    public ServerLink(IChannel channel) {
         this.channel = channel;
         this.ip = "137.74.65.186";
         this.port = 27015;
@@ -38,37 +32,37 @@ public class ServerLink {
     }
     private void start() {
         service.scheduleAtFixedRate(() -> {
-        try {
-            client.getServerInfo(server).whenComplete(((sourceServer, serverInfoError) -> {
-                if (serverInfoError != null) {
-                    buildFailedEmbed();
-                    return;
-                }
-                buildEmbed(sourceServer);
-            }));
-        } catch (Exception e) {
-            e.printStackTrace();
-            buildFailedEmbed();
-            return;
-        }
-    }, 1,10, TimeUnit.SECONDS);
-}
+            try {
+                client.getServerInfo(server).whenComplete(((sourceServer, serverInfoError) -> {
+                    if (serverInfoError != null) {
+                        buildFailedEmbed();
+                        return;
+                    }
+                    buildEmbed(sourceServer);
+                }));
+            } catch (Exception e) {
+                e.printStackTrace();
+                buildFailedEmbed();
+                return;
+            }
+        }, 1,10, TimeUnit.SECONDS);
+    }
 
     private void buildEmbed(SourceServer server) {
         try {
-            EmbedCreateSpec builder = new EmbedCreateSpec();
-            builder.setColor(Color.GREEN);
-            builder.setTitle("Server Status");
-            builder.addField("Server is online!", "There are currently " + server.getNumOfPlayers() + " players online!", false);
-            builder.addField("Server Map", "" + server.getMapName(), false);
-            builder.addField("Connect Now!", "steam://connect/"+ip+":"+port, false);
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.withColor(0, 255, 0);
+            builder.withAuthorName("Server Status");
+            builder.appendField("Server is online!", "There are currently " + server.getNumOfPlayers() + " players online!", false);
+            builder.appendField("Server Map", "" + server.getMapName(), false);
+            builder.appendField("Connect Now!", "steam://connect/"+ip+":"+port, false);
             try {
-                builder.setImage("https://image.gametracker.com/images/maps/160x120/garrysmod/" + server.getMapName() + ".jpg");
+                builder.withImage("https://image.gametracker.com/images/maps/160x120/garrysmod/" + server.getMapName() + ".jpg");
             } catch (Exception e) {
             }
-            builder.setFooter("Last Refreshed at " + LocalDateTime.now(),);
+            builder.withFooterText("Last Refreshed at " + LocalDateTime.now());
             if (statusMessage != null) {
-                statusMessage.edit();
+                RequestBuffer.request(() -> statusMessage.edit(builder.build()));
             } else {
                 if (channel.getFullMessageHistory().getLatestMessage().getAuthor().isBot()) {
                     channel.getFullMessageHistory().getLatestMessage().delete();
