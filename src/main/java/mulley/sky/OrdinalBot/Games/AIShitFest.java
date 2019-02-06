@@ -26,8 +26,8 @@ public class AIShitFest {
         EmbedBuilder builder = new EmbedBuilder();
         builder.withAuthorName("TwentyOne");
         builder.withFooterText(mainevent.getAuthor().getName()+"'s game");
-        pNumber = pNumber + rand.nextInt(12) + 1;
-        cNumber = cNumber + rand.nextInt(12) + 1;
+        pNumber = pNumber + rand.nextInt(7) + 1;
+        cNumber = cNumber + rand.nextInt(7) + 1;
         builder.appendField("Current Number: "+pNumber,"Say `hit` to increase your number by a random amount, or `miss` to skip",false);
         RequestBuffer.request(() -> message = mainevent.getChannel().sendMessage(builder.build()));
     }
@@ -43,7 +43,7 @@ public class AIShitFest {
                     if (rand.nextInt(5) == 0) {
                         builder.withDescription("Bot has missed");
                     } else {
-                        cNumber = cNumber + rand.nextInt(12) + 1;
+                        cNumber = cNumber + rand.nextInt(7) + 1;
                         builder.withDescription("Bot has hit");
                     }
                 } else {
@@ -54,16 +54,17 @@ public class AIShitFest {
                     builder.withColor(0,255,0);
                     RequestBuffer.request(() -> message.edit(builder.build()));
                     event.getClient().getDispatcher().unregisterListener(this);
+                    return;
                 }
                 if (cNumber <= 21) {
                     if (event.getMessage().getContent().equals("hit")) {
-                        pNumber = pNumber + rand.nextInt(12) + 1;
+                        pNumber = pNumber + rand.nextInt(7) + 1;
                         if (pNumber > 21) {
                             builder.appendField("Current Number: " + pNumber, "You've gone bust! Bot wins!", false);
                             builder.withColor(255, 0, 0);
                             RequestBuffer.request(() -> message.edit(builder.build()));
                             event.getClient().getDispatcher().unregisterListener(this);
-                            iterations = 6;
+                            return;
                         }
                     }
                 }
