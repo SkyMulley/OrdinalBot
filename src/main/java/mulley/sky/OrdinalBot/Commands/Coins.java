@@ -27,7 +27,7 @@ public class Coins extends CommandCore {
                 long id = Long.parseLong(argArray[1].replaceAll("\\D+",""));
                 user = event.getClient().getUserByID(id);
             } else {
-                List<IUser> users = event.getClient().getUsersByName(argArray[1]);
+                List<IUser> users = event.getGuild().getUsersByName(argArray[1]);
                 if(users.size()!= 1) {
                     event.getChannel().sendMessage("Either your selected user doesn't exist or there are multiple results, please refine your search. (Please note my developer is retarded so it is caps sensitive)");
                     return false;
