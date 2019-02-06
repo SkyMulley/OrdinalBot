@@ -91,14 +91,6 @@
                 <url>https://jcenter.bintray.com/</url>
             </repository>
 
-        <repository>
-
-            <id>jcenter</id>
-
-            <url>http://jcenter.bintray.com</url>
-
-        </repository>
-
     </repositories>
 
     <dependencies>
@@ -135,8 +127,8 @@
 
         <dependency>
             <groupId>com.discord4j</groupId>
-            <artifactId>discord4j-core</artifactId>
-            <version>LATEST</version>
+            <artifactId>Discord4J</artifactId>
+            <version>2.10.1</version>
         </dependency>
     </dependencies>
 </project>
