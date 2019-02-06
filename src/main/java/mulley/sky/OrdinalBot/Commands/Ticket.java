@@ -1,4 +1,4 @@
-package uk.noxiousbot.NoxiousBot.Commands;
+package mulley.sky.OrdinalBot.Commands;
 
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.ICategory;

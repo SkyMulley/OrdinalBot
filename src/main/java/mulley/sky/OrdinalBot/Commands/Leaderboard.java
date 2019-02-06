@@ -1,6 +1,7 @@
-package uk.noxiousbot.NoxiousBot.Commands;
+package mulley.sky.OrdinalBot.Commands;
 
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
 
@@ -33,7 +34,8 @@ public class Leaderboard extends CommandCore {
         for(int i = 0;i < 10; ++i) {
             Map.Entry<Long,Integer> entry = sorted.entrySet().iterator().next();
             int num = i + 1;
-            players = players + "\n" + num +". " + event.getClient().getUserByID(entry.getKey()) + " - " + entry.getValue();
+            try { players = players + "\n" + num + ". " + event.getClient().getUserByID(entry.getKey()) + " - " + entry.getValue();
+            }catch (Exception e) {players = players + "\n" + num + ". " + event.getClient().getUserByID(entry.getKey()).getName() + " - " + entry.getValue();}
             sorted.remove(entry.getKey());
         }
         builder.appendField("Top Ten Users",players,false);

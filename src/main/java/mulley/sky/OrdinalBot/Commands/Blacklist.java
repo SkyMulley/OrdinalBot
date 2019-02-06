@@ -25,6 +25,7 @@ public class Blacklist extends CommandCore {
                     long id = Long.parseLong(argArray[1].replaceAll("\\D+",""));
                     user = event.getClient().getUserById(Snowflake.of(id)).block();
                 } else {
+                    //client.getGuildById(Snowflake.of(guildId)).flatMapMany(Guild::getMembers).filter(member -> member.getUsername().equals(name));
                     List<User> users = event.getClient().getUsers().filter(u -> u.getUsername().equals(argArray[1])).collectList().block();
                     if(users.size()!= 1) {
                         event.getMessage().getChannel().block().createMessage("Either your selected user doesn't exist or there are multiple results, please refine your search. (Please note my developer is retarded so it is caps sensitive)");

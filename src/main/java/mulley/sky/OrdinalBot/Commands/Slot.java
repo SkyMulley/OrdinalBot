@@ -1,18 +1,17 @@
-package uk.noxiousbot.NoxiousBot.Commands;
+package mulley.sky.OrdinalBot.Commands;
 
+import mulley.sky.OrdinalBot.Games.Roulette;
+import mulley.sky.OrdinalBot.PlayerManager;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
-import uk.noxiousbot.NoxiousBot.Games.LowerHigher;
-import uk.noxiousbot.NoxiousBot.Games.Roulette;
-import uk.noxiousbot.NoxiousBot.PlayerManager;
 
 public class Slot extends CommandCore {
     private PlayerManager pm;
     public Slot (PlayerManager pm) {
         this.pm = pm;
         commandName = "Slot";
-        helpMessage = "Take a bet and see how your roll with take out";
+        helpMessage = "Enter a bet, roll the dice and see how your luck fares.";
         Usage = "?slot <coins>";
     }
 
@@ -29,7 +28,7 @@ public class Slot extends CommandCore {
             argsNotFound(event);
             return true;
         }
-        if(pm.getPlayers().get(event.getAuthor().getLongID()) < bet) {
+        if(pm.getCoins(event.getAuthor()) < bet) {
             notEnoughCoins(event);
             return true;
         }

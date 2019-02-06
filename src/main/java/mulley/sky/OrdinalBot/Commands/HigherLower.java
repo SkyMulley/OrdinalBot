@@ -1,10 +1,10 @@
-package uk.noxiousbot.NoxiousBot.Commands;
+package mulley.sky.OrdinalBot.Commands;
 
+import mulley.sky.OrdinalBot.Games.LowerHigher;
+import mulley.sky.OrdinalBot.PlayerManager;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
-import uk.noxiousbot.NoxiousBot.Games.LowerHigher;
-import uk.noxiousbot.NoxiousBot.PlayerManager;
 
 public class HigherLower extends CommandCore {
     private PlayerManager pm;
@@ -28,7 +28,7 @@ public class HigherLower extends CommandCore {
             argsNotFound(event);
             return true;
         }
-        if(pm.getPlayers().get(event.getAuthor().getLongID()) < bet) {
+        if(pm.getCoins(event.getAuthor()) < bet) {
             notEnoughCoins(event);
             return true;
         }

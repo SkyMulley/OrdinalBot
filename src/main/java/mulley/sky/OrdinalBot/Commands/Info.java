@@ -1,4 +1,4 @@
-package uk.noxiousbot.NoxiousBot.Commands;
+package mulley.sky.OrdinalBot.Commands;
 
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.util.EmbedBuilder;
@@ -7,8 +7,7 @@ import sx.blah.discord.util.RequestBuffer;
 public class Info extends CommandCore{
     public Info () {
         commandName = "Info";
-        helpMessage = "Just shows some information about the bot";
-        Usage = "?info";
+        helpViewable = false;
     }
 
     @Override
@@ -19,6 +18,7 @@ public class Info extends CommandCore{
                 ". Becoming the ordinal basically plasters your name everywhere but who doesn't want that. Gain coins by playing minigames, talking in text and voice channels," +
                 "and also duelling other players for their coins. For more information use the ?help command");
         builder.withFooterText("Made by Sky#2134");
+        builder.withImage(event.getClient().getOurUser().getAvatarURL());
         RequestBuffer.request(() -> event.getMessage().getChannel().sendMessage(builder.build()));
         return true;
     }

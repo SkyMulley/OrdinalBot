@@ -1,6 +1,7 @@
-package uk.noxiousbot.NoxiousBot.Commands;
+package mulley.sky.OrdinalBot.Commands;
 
 import com.koloboke.collect.impl.hash.Hash;
+import mulley.sky.OrdinalBot.PlayerManager;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.EmbedBuilder;
@@ -8,12 +9,11 @@ import sx.blah.discord.util.RequestBuffer;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Coins extends CommandCore {
-    private HashMap<Long, Integer> players;
+    private PlayerManager players;
     private IUser user;
-    public Coins(HashMap<Long, Integer> players) {
+    public Coins(PlayerManager players) {
         commandName = "Coins";
         helpMessage = "View the amount of coins you or another person have";
         Usage = "?coins [Player]";
@@ -44,7 +44,7 @@ public class Coins extends CommandCore {
         } else {
             EmbedBuilder builder = new EmbedBuilder();
             builder.withAuthorName(user.getName() + "'s coins");
-            builder.withDescription(players.get(user.getLongID()).toString());
+            builder.withDescription(""+players.getCoins(user));
             RequestBuffer.request(() -> event.getMessage().getChannel().sendMessage(builder.build()));
             return true;
         }

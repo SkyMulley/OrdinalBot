@@ -1,4 +1,4 @@
-package uk.noxiousbot.NoxiousBot.Commands;
+package mulley.sky.OrdinalBot.Commands;
 
 
 import com.vdurmont.emoji.Emoji;
@@ -25,7 +25,6 @@ public class Suggest extends CommandCore {
 
 
     @Override
-
     public boolean executeCommand(MessageReceivedEvent event, String[] argArray) {
         try {
             if(argArray.length >= 2) {

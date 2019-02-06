@@ -1,4 +1,4 @@
-package uk.noxiousbot.NoxiousBot.Commands;
+package mulley.sky.OrdinalBot.Commands;
 
 
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
@@ -15,9 +15,7 @@ public class Help extends CommandCore {
 
         commandName = "Help";
 
-        helpMessage = "See all the commands in place with the bot";
-
-        Usage = "?Help";
+        helpViewable = false;
 
         this.GC = GC;
 
@@ -35,16 +33,18 @@ public class Help extends CommandCore {
 
             builder.withAuthorName("Help Menu");
 
-            builder.withColor(0,0,255);
+            builder.withColor(255,255,255);
 
             builder.withAuthorIcon(event.getClient().getOurUser().getAvatarURL());
 
+            String message = "";
+
             for(CommandCore GG : GC) {
-
-                builder.appendField(""+GG.getCommandName(),"Description: "+GG.getHelpMessage()+"\nUsage: "+GG.getUsage(),false);
-
+                if(GG.isHelpViewable()) {
+                    message = message + "\n**"+GG.getCommandName()+" - **"+GG.getHelpMessage()+"\nUsage: "+GG.getUsage();
+                }
             }
-
+            builder.appendField("Commands",message,false);
             RequestBuffer.request(() -> event.getMessage().getChannel().sendMessage(builder.build()));
 
             return true;

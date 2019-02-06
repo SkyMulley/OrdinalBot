@@ -1,6 +1,6 @@
 package mulley.sky.OrdinalBot.Commands;
 
-import discord4j.core.event.domain.message.MessageCreateEvent;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public abstract class CommandCore {
     protected String commandName;
@@ -13,5 +13,5 @@ public abstract class CommandCore {
     public String getUsage() {return Usage;}
     public boolean isHelpViewable() {return helpViewable;}
 
-    public boolean executeCommand(MessageCreateEvent event, String[] argArray) { return true;}
+    public boolean executeCommand(MessageReceivedEvent event, String[] argArray) { return true;}
 }

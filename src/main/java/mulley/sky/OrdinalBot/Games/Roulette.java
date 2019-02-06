@@ -1,4 +1,4 @@
-package uk.noxiousbot.NoxiousBot.Games;
+package mulley.sky.OrdinalBot.Games;
 
 import com.vdurmont.emoji.Emoji;
 import com.vdurmont.emoji.EmojiManager;
@@ -7,7 +7,7 @@ import sx.blah.discord.handle.obj.IEmoji;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.RequestBuffer;
-import uk.noxiousbot.NoxiousBot.PlayerManager;
+import mulley.sky.OrdinalBot.PlayerManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Roulette {
         this.mainevent = mainevent;
         builder.withAuthorName("Slot");
         builder.withFooterText(mainevent.getAuthor().getName()+"'s game | Bet: "+bet);
-        pm.loseCoins(mainevent.getAuthor().getLongID(),bet);
+        pm.loseCoins(mainevent.getAuthor(),bet);
         mainevent.getChannel().sendMessage("Bet has been collected, let's get going!");
         emojis.add(EmojiManager.getForAlias("lemon"));
         emojis.add(EmojiManager.getForAlias("chocolate_bar"));
@@ -70,9 +70,11 @@ public class Roulette {
             Math.ceil(moneyback);
             builder.withDescription(emoji1.getUnicode() + "|" + emoji2.getUnicode() + "|" + emoji3.getUnicode() + "\n" + emoji4.getUnicode() + "|" + emoji5.getUnicode() + "|" + emoji6.getUnicode() + "\n" + emoji7.getUnicode() + "|" + emoji8.getUnicode() + "|" + emoji9.getUnicode());
             builder.appendField("Lets see what you got!", "You bet in " + bet + " and got back " + moneyback, false);
-            builder.withColor(255, 255, 255);
+            if(bet<moneyback) { builder.withColor(0, 255, 0);}
+            if(bet==moneyback) { builder.withColor(255, 255, 255);}
+            if(bet>moneyback) { builder.withColor(255, 0, 0);}
             RequestBuffer.request(() -> message = mainevent.getChannel().sendMessage(builder.build()));
-            pm.addCoins(mainevent.getAuthor().getLongID(), moneyback);
+            pm.addCoins(mainevent.getAuthor(), moneyback);
         }catch (Exception e) {
             e.printStackTrace();
         }
