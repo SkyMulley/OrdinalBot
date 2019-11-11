@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        String token = "NTMwNzY4ODQ5NTk1NzkzNDE5.Dzcuew.WTJtV2TCLjbaTAeDzwZIxWsY8oI";
+        String token = "*bot token removed*";
         IDiscordClient cli = getBuiltDiscordClient(token);
         cli.getDispatcher().registerListener(new MessageListener(cli));
         cli.login();
